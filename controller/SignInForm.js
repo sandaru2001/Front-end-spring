@@ -10,7 +10,7 @@ $("#btnSignIn").on('click',()=>{
 
 
     $.ajax({
-        url:"http://localhost:9090/shop/api/v1/user/signin",
+        url:"http://localhost:9090/shop/api/v1/user/signIn",
         type:"POST",
         contentType:"application/json",
         data:JSON.stringify(data),

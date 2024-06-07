@@ -8,6 +8,7 @@ $("#customerForm").css("display", "none")
 $("#supplierForm").css("display", "none")
 $("#inventoryForm").css("display", "none")
 $("#saleForm").css("display", "none")
+$("#sizeForm").css("display", "none")
 
 
 const token = localStorage.getItem("token")

@@ -142,9 +142,9 @@ $("#btnCusSave").on("click", () => {
     }
 
     let cusData = {
-        customer_name: name,
+        cus_name: name,
         gender: gender,
-        join_date: joinDate,
+        join_date_as_a_loyalty_customer: joinDate,
         level: level,
         total_points: totalPoint,
         dob: dob,
@@ -155,23 +155,21 @@ $("#btnCusSave").on("click", () => {
         address_line_05: address05,
         contact_no: contactNo,
         email: email,
-        purchase_date_time: recentPurchaseDateAndTime
+        recent_purchase_date_and_time: recentPurchaseDateAndTime
     }
 
     let jsonData = JSON.stringify(cusData)
 
     console.log(localStorage.getItem("token"))
 
-    console.log(cusData);
-
     $.ajax({
         url: "http://localhost:9090/shop/api/v1/customer/save",
         type: "POST",
         contentType: "application/json",
         data: jsonData,
-        /*headers: {
+        headers: {
             Authorization: "Bearer " + localStorage.getItem("token")
-        }*/
+        },
 
         success: function (response) {
             console.log("------------" + response)
@@ -222,9 +220,9 @@ function loadCustomerData() {
         type: "GET",
         processData: false,
         contentType: false,
-        /*headers: {
+        headers: {
             Authorization: "Bearer " + localStorage.getItem("token")
-        },*/
+        },
         success: function (response) {
             setValue(response)
         },
@@ -234,14 +232,10 @@ function loadCustomerData() {
     })
 }
 
-$("#btnCusReset").on("click", () => {
-    resetField()
-})
-
 
 // Update Customer
+$("#btnCusUpdate").prop("disabled", true);
 
-$("#btnCusUpdate").prop("disabled", true)
 let selectedCusId = null
 
 $("#btnCusUpdate").on("click", () => {
@@ -390,10 +384,10 @@ $("#btnCusUpdate").on("click", () => {
     }
 
     let cusData = {
-        customer_code:selectedCusId,
-        customer_name: name,
+        cus_code:selectedCusId,
+        cus_name: name,
         gender: gender,
-        join_date: joinDate,
+        join_date_as_a_loyalty_customer: joinDate,
         level: level,
         total_points: totalPoint,
         dob: dob,
@@ -404,7 +398,7 @@ $("#btnCusUpdate").on("click", () => {
         address_line_05: address05,
         contact_no: contactNo,
         email: email,
-        purchase_date_time: recentPurchaseDateAndTime
+        recent_purchase_date_and_time: recentPurchaseDateAndTime
     }
 
     let jsonData = JSON.stringify(cusData)
@@ -416,9 +410,9 @@ $("#btnCusUpdate").on("click", () => {
         type: "PUT",
         contentType: "application/json",
         data: jsonData,
-       /* headers: {
+        headers: {
             Authorization: "Bearer " + localStorage.getItem("token")
-        },*/
+        },
 
         success: function (response) {
             console.log("------------" + response)
@@ -451,6 +445,12 @@ $("#btnCusUpdate").on("click", () => {
     loadCustomerData()
 })
 
+
+//Reset
+$("#btnCusReset").on("click", () => {
+    resetField()
+})
+
 const resetField = () => {
     $("#btnCusSave").prop("disabled", false)
     $("#btnCusUpdate").prop("disabled", true)
@@ -472,21 +472,22 @@ const resetField = () => {
     $("#recentPurchaseDateAndTime").val("")
 }
 
+
+// fill data with table
 const setValue = (response) => {
     $("#customer-tbl").empty()
     response.map((customer) => {
         let recode = `<tr class='cus_name'>
-                                    
-                                    <td>${customer.customer_name}</td>
+                                    <td>${customer.cus_name}</td>
                                     <td class='email'>${customer.email}</td>
                                     <td class='gender'>${customer.gender}</td>
-                                    <td class='join_date_as_a_loyalty_customer'>${customer.join_date}</td>
+                                    <td class='join_date_as_a_loyalty_customer'>${customer.join_date_as_a_loyalty_customer}</td>
                                     <td class='level'>${customer.level}</td>
                                     <td class='total_points'>${customer.total_points}</td>
                                     <td class='dob'>${customer.dob}</td>
-                                    <td class='address_line_01'>${customer.address_line_01+","} ${customer.address_line_02+","} ${customer.address_line_03+","} ${customer.address_line_04+","} ${customer.address_line_05}</td>
+                                    <td class='address_line_01'>${customer.address_line_01} ${customer.address_line_02} ${customer.address_line_03} ${customer.address_line_04} ${customer.address_line_05}</td>
                                     <td class='contact_no'>${customer.contact_no}</td>
-                                    <td class='recent_purchase_date_and_time'>${customer.purchase_date_time}</td>
+                                    <td class='recent_purchase_date_and_time'>${customer.recent_purchase_date_and_time}</td>
                                     <td>
                                         <button type="button" class="btn btn-danger">Delete</button>
                                         <button type="button" class="btn btn-warning">
@@ -497,17 +498,21 @@ const setValue = (response) => {
         $("#customer-tbl").append(recode)
         $("#customer-tbl")
             .find("tr:last .btn-danger")
-            .click(() => handleDeleteOnClick(customer))
+            .click(() => handleDeleteCustomerOnClick(customer))
         $("#customer-tbl")
             .find("tr:last .btn-warning")
-            .click(() => handleEditOnClick(customer))
+            .click(() => handleEditCustomerOnClick(customer))
     })
 }
 
 // table inside delete button function
-window.handleDeleteOnClick = (customer) => {
+window.handleDeleteCustomerOnClick = (customer) => {
+    console.log(customer)
+
     let formData = new FormData();
-    formData.append("customer_code", customer.customer_code);
+    formData.append("cus_code", customer.cus_code);
+
+
 
     Swal.fire({
         title: 'Are you sure?',
@@ -525,13 +530,13 @@ window.handleDeleteOnClick = (customer) => {
                 processData: false,
                 contentType: false,
                 data: formData,
-                /*headers: {
+                headers: {
                     "Authorization": "Bearer " + localStorage.getItem("token")
-                },*/
+                },
                 success: function (response) {
                     Swal.fire(
                         'Deleted!',
-                        `${customer.customer_code} has been deleted.`,
+                        `${customer.cus_code} has been deleted.`,
                         'success'
                     )
                     resetField()
@@ -554,16 +559,14 @@ window.handleDeleteOnClick = (customer) => {
 }
 
 // table inside edit button function
-window.handleEditOnClick = (customer) => {
+window.handleEditCustomerOnClick = (customer) => {
     $("#btnCusUpdate").prop("disabled", false)
     $("#btnCusSave").prop("disabled", true)
 
-    console.log(customer);
-
-    selectedCusId = customer.customer_code;
-    $("#customerName").val(customer.customer_name)
+    selectedCusId = customer.cus_code
+    $("#customerName").val(customer.cus_name)
     $("#cus_gender").val(customer.gender)
-    $("#cusJoinDate").val(customer.join_date)
+    $("#cusJoinDate").val(customer.join_date_as_a_loyalty_customer)
     $("#cus_level").val(customer.level)
     $("input[name='totalPoint']").val(customer.total_points)
     $("#cusDob").val(customer.dob)
@@ -574,7 +577,7 @@ window.handleEditOnClick = (customer) => {
     $("input[name='cusAddress05']").val(customer.address_line_05)
     $("#cusContact").val(customer.contact_no)
     $("#cusEmail").val(customer.email)
-    $("#recentPurchaseDateAndTime").val(customer.purchase_date_time)
+    $("#recentPurchaseDateAndTime").val(customer.recent_purchase_date_and_time)
 }
 
 
@@ -582,7 +585,7 @@ function setData(response) {
     $("select[name='level']").val(response.level)
     $("select[name='gender']").val(response.gender)
     $("#cusDob").val(response.dob)
-    $("#cusJoinDate").val(response.join_date)
+    $("#cusJoinDate").val(response.join_date_as_a_loyalty_customer)
 }
 
 window.loadCustomerData = loadCustomerData

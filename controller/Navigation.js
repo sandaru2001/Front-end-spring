@@ -6,6 +6,7 @@ $("#btnDashboard").on('click',()=>{
     $("#inventoryForm").css('display','none');
     $("#saleForm").css('display','none');
     $("#signInForm").css('display','none');
+    $("#sizeForm").css('display','none');
 })
 
 $("#btnEmployee").on('click',()=>{
@@ -16,6 +17,7 @@ $("#btnEmployee").on('click',()=>{
     $("#inventoryForm").css('display','none');
     $("#saleForm").css('display','none');
     $("#signInForm").css('display','none');
+    $("#sizeForm").css('display','none');
 })
 
 $("#btnCustomer").on('click',()=>{
@@ -26,6 +28,7 @@ $("#btnCustomer").on('click',()=>{
     $("#inventoryForm").css('display','none');
     $("#saleForm").css('display','none');
     $("#signInForm").css('display','none');
+    $("#sizeForm").css('display','none');
 })
 
 $("#btnSupplier").on('click',()=>{
@@ -36,6 +39,7 @@ $("#btnSupplier").on('click',()=>{
     $("#supplierForm").css('display','block');
     $("#saleForm").css('display','none');
     $("#signInForm").css('display','none');
+    $("#sizeForm").css('display','none');
 })
 
 $("#btnInventory").on('click',()=>{
@@ -46,6 +50,7 @@ $("#btnInventory").on('click',()=>{
     $("#saleForm").css('display','none');
     $("#inventoryForm").css('display','block');
     $("#signInForm").css('display','none');
+    $("#sizeForm").css('display','none');
 })
 
 $("#btnSale").on('click',()=>{
@@ -56,6 +61,18 @@ $("#btnSale").on('click',()=>{
     $("#supplierForm").css('display','none');
     $("#saleForm").css('display','block');
     $("#signInForm").css('display','none');
+    $("#sizeForm").css('display','none');
+})
+
+$("#btnSize").on('click',()=>{
+    $("#dashboardFrom").css('display','none');
+    $("#employeeForm").css('display','none');
+    $("#customerForm").css('display','none');
+    $("#inventoryForm").css('display','none');
+    $("#supplierForm").css('display','none');
+    $("#saleForm").css('display','none');
+    $("#signInForm").css('display','none');
+    $("#sizeForm").css('display','block');
 })
 
 $("#btnSignOut").on('click',()=>{
@@ -67,4 +84,6 @@ $("#btnSignOut").on('click',()=>{
     $("#saleForm").css('display','none');
     $("#sidebar").css('display','none');
     $("#signInForm").css('display','block');
+    $("#sizeForm").css('display','none');
 });
+
